@@ -333,4 +333,5 @@ tests / ops hardened (Phase 5) — on top of the Phase 1 stabilization that got
 the app importing again. Endpoint count grew from 19 (intended, but not booting)
 to 27 working routes; tests from 6 to 28.
 
+made serious changes to a lot of things, and the UI as well, so it should be ready for review on afterquery! 
 
