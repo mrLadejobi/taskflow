@@ -1,7 +1,7 @@
 """User management endpoints."""
 from fastapi import APIRouter, HTTPException
-from sqlalchemy.orm import Session as OrmSession
-
+from typing import Annotated
+from fastapi import APIRouter, Depends
 from taskflow.dependencies import CurrentUser, DbSession, get_user_or_404
 from taskflow.models.user import User
 from taskflow.schemas.user import UserRead, UserUpdate
@@ -30,6 +30,7 @@ def update_me(payload: UserUpdate, current_user: CurrentUser, db: DbSession) -> 
 
 
 @router.get("/{user_id}", response_model=UserRead)
-def read_user(user: OrmSession = Depends(get_user_or_404)) -> User:
+def read_user(user: Annotated[User, Depends(get_user_or_404)]) -> User:
     """Fetch any user's public profile by id."""
     return user
+
