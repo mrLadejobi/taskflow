@@ -29,10 +29,11 @@ export function useProjectTasks(projectId: number, params: TaskListParams = {}) 
   });
 }
 
-export function useMyTasks(params: TaskListParams = {}) {
+export function useMyTasks(params: TaskListParams = {}, enabled = true) {
   return useQuery({
     queryKey: queryKeys.myTasks(params),
     queryFn: () => getMyTasks(params),
+    enabled,
   });
 }
 
