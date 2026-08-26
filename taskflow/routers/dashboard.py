@@ -34,6 +34,7 @@ def get_dashboard(owner: CurrentUser, db: DbSession) -> DashboardSummary:
         total=sum(status_map.values()),
         todo=status_map.get(TaskStatus.TODO, 0),
         in_progress=status_map.get(TaskStatus.IN_PROGRESS, 0),
+        review=status_map.get(TaskStatus.REVIEW, 0),
         done=status_map.get(TaskStatus.DONE, 0),
     )
 
