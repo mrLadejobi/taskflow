@@ -16,7 +16,7 @@ def test_dashboard_summary(client, user_factory):
 
     d = client.get("/api/v1/dashboard", headers=h).json()
     assert d["projects"] == 1
-    assert d["tasks"] == {"total": 3, "todo": 2, "in_progress": 0, "done": 1}
+    assert d["tasks"] == {"total": 3, "todo": 2, "in_progress": 0, "review": 0, "done": 1}
     assert d["overdue"] == 1
     assert d["assigned_to_me"] == 3
     assert d["by_priority"]["high"] == 1

@@ -8,6 +8,7 @@ class StatusCounts(BaseModel):
     total: int = 0
     todo: int = 0
     in_progress: int = 0
+    review: int = 0
     done: int = 0
 
 
