@@ -25,3 +25,22 @@ export async function login(
   });
   return data;
 }
+
+/**
+ * Request a password-reset link for an email address.
+ *
+ * The backend endpoint is added in the collaboration phase. The UI always
+ * reports success regardless of the outcome so it never reveals whether an
+ * email is registered.
+ */
+export async function requestPasswordReset(email: string): Promise<void> {
+  await api.post("/auth/forgot-password", { email });
+}
+
+/** Complete a password reset using the token from the emailed link. */
+export async function resetPassword(
+  token: string,
+  password: string,
+): Promise<void> {
+  await api.post("/auth/reset-password", { token, password });
+}

@@ -6,6 +6,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 
+import { AuthProvider } from "@/lib/hooks/use-auth";
+
 /**
  * Global client-side providers: React Query for server-state caching,
  * next-themes for light/dark mode, and Sonner for toast notifications.
@@ -33,7 +35,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
         <Toaster richColors closeButton position="top-right" />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
