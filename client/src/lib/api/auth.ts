@@ -1,0 +1,27 @@
+import { api } from "./client";
+import type { RegisterInput, TokenResponse, User } from "@/lib/types";
+
+/** Register a new account (JSON body). Returns the created user. */
+export async function register(input: RegisterInput): Promise<User> {
+  const { data } = await api.post<User>("/auth/register", input);
+  return data;
+}
+
+/**
+ * Exchange email + password for a JWT.
+ *
+ * The backend uses the OAuth2 password flow, so credentials must be sent as
+ * form-encoded fields with the email in the `username` field.
+ */
+export async function login(
+  email: string,
+  password: string,
+): Promise<TokenResponse> {
+  const form = new URLSearchParams();
+  form.set("username", email);
+  form.set("password", password);
+  const { data } = await api.post<TokenResponse>("/auth/login", form, {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  });
+  return data;
+}
