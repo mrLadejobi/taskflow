@@ -1,10 +1,12 @@
 """Shared FastAPI dependencies.
 
-Provides database sessions and authenticated-user resolution for routes.
+Provides database sessions, authenticated-user resolution, and common
+query-parameter dependencies (pagination) for routes.
 """
+from dataclasses import dataclass
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Query, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -72,3 +74,22 @@ def get_project_owned_or_404(db: DbSession, project_id: int, owner: User):
     if project is None:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
+
+
+@dataclass
+class Pagination:
+    """Resolved pagination window for a list endpoint."""
+
+    limit: int
+    offset: int
+
+
+def pagination_params(
+    limit: Annotated[int, Query(ge=1, le=100, description="Max rows to return.")] = 50,
+    offset: Annotated[int, Query(ge=0, description="Rows to skip.")] = 0,
+) -> Pagination:
+    """Dependency yielding validated ``limit``/``offset`` query params."""
+    return Pagination(limit=limit, offset=offset)
+
+
+PaginationParams = Annotated[Pagination, Depends(pagination_params)]
