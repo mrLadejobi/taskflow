@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from taskflow.routers import auth, projects, tags, tasks, users
 from taskflow.config import settings
 from taskflow.database import init_db
 from taskflow.routers import auth, projects, tasks, users
@@ -47,6 +48,7 @@ def create_app() -> FastAPI:
     app.include_router(users.router, prefix=prefix)
     app.include_router(projects.router, prefix=prefix)
     app.include_router(tasks.router, prefix=prefix)
+    app.include_router(tags.router, prefix="/api/v1")
 
     @app.get("/health", tags=["meta"])
     def health() -> dict[str, str]:
