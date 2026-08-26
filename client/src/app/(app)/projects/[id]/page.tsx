@@ -14,6 +14,7 @@ import {
 
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { ProjectFormDialog } from "@/components/projects/project-form-dialog";
+import { KanbanBoard } from "@/components/tasks/kanban-board";
 import { TaskFormDialog } from "@/components/tasks/task-form-dialog";
 import { TaskTableView } from "@/components/tasks/task-table-view";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import { getErrorMessage } from "@/lib/api/client";
 import { useDeleteProject, useProject } from "@/lib/hooks/use-projects";
 
@@ -138,10 +145,21 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      <TaskTableView
-        projectId={projectId}
-        onCreate={() => setCreateOpen(true)}
-      />
+      <Tabs defaultValue="table" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="table">Table</TabsTrigger>
+          <TabsTrigger value="board">Board</TabsTrigger>
+        </TabsList>
+        <TabsContent value="table">
+          <TaskTableView
+            projectId={projectId}
+            onCreate={() => setCreateOpen(true)}
+          />
+        </TabsContent>
+        <TabsContent value="board">
+          <KanbanBoard projectId={projectId} />
+        </TabsContent>
+      </Tabs>
 
       <TaskFormDialog
         open={createOpen}
