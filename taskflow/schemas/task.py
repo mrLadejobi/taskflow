@@ -4,6 +4,7 @@ from datetime import date, datetime
 from pydantic import BaseModel, ConfigDict, Field
 
 from taskflow.models.task import TaskPriority, TaskStatus
+from taskflow.schemas.tags import TagOut
 
 
 class TaskBase(BaseModel):
@@ -44,3 +45,24 @@ class TaskRead(TaskBase):
     completed_at: datetime | None
     created_at: datetime
     updated_at: datetime
+    tags: list[TagOut] = []
+
+
+class BulkStatusUpdate(BaseModel):
+    """Payload to set a single status on many tasks at once."""
+
+    task_ids: list[int] = Field(min_length=1)
+    status: TaskStatus
+
+
+class BulkDelete(BaseModel):
+    """Payload naming the tasks to delete in bulk."""
+
+    task_ids: list[int] = Field(min_length=1)
+
+
+class BulkResult(BaseModel):
+    """Outcome of a bulk operation."""
+
+    requested: int
+    affected: int

@@ -53,6 +53,6 @@ def init_db() -> None:
     Import all model modules before calling this so their tables
     are present on ``Base.metadata``.
     """
-    from taskflow.models import user, project, task  # noqa: F401
+    from taskflow.models import user, project, task, tag  # noqa: F401
 
     Base.metadata.create_all(bind=engine)

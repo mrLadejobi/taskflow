@@ -3,7 +3,7 @@
 Tasks belong to a project and carry status, priority, and due-date info.
 """
 import enum
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 
 from sqlalchemy import Date, DateTime, Enum, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -73,11 +73,14 @@ class Task(Base):
 
     # Relationships
     project: Mapped["Project"] = relationship(back_populates="tasks")  # noqa: F821
+    tags: Mapped[list["Tag"]] = relationship(  # noqa: F821
+        secondary="task_tags", back_populates="tasks"
+    )
 
     def mark_done(self) -> None:
         """Transition the task to DONE and stamp completion time."""
         self.status = TaskStatus.DONE
-        self.completed_at = datetime.now()
+        self.completed_at = datetime.now(UTC)
 
     def reopen(self) -> None:
         """Return a completed task to TODO."""

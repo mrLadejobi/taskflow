@@ -1,7 +1,8 @@
 """User management endpoints."""
-from fastapi import APIRouter, HTTPException
 from typing import Annotated
+
 from fastapi import APIRouter, Depends
+
 from taskflow.dependencies import CurrentUser, DbSession, get_user_or_404
 from taskflow.models.user import User
 from taskflow.schemas.user import UserRead, UserUpdate
