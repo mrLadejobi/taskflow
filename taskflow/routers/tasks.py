@@ -223,7 +223,7 @@ def update_task(task_id: int, payload: TaskUpdate, owner: CurrentUser, db: DbSes
 
     if new_status == TaskStatus.DONE and task.completed_at is None:
         task.completed_at = datetime.now(UTC)
-    elif new_status in (TaskStatus.TODO, TaskStatus.IN_PROGRESS) and new_status is not None:
+    elif new_status is not None and new_status != TaskStatus.DONE:
         task.completed_at = None
 
     db.commit()
