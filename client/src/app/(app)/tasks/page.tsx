@@ -1,5 +1,7 @@
+"use client";
+
 import { PageHeader } from "@/components/app/page-header";
-import { Card, CardContent } from "@/components/ui/card";
+import { TaskTableView } from "@/components/tasks/task-table-view";
 
 export default function MyTasksPage() {
   return (
@@ -8,11 +10,7 @@ export default function MyTasksPage() {
         title="My Tasks"
         description="Everything assigned to you, across all projects."
       />
-      <Card>
-        <CardContent className="py-16 text-center text-sm text-muted-foreground">
-          Tasks assigned to you will appear here.
-        </CardContent>
-      </Card>
+      <TaskTableView />
     </div>
   );
 }
