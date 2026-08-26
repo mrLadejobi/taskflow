@@ -3,10 +3,15 @@
  * Kept in sync with taskflow/schemas/*.py.
  */
 
-export type TaskStatus = "todo" | "in_progress" | "done";
+export type TaskStatus = "todo" | "in_progress" | "review" | "done";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";
 
-export const TASK_STATUSES: TaskStatus[] = ["todo", "in_progress", "done"];
+export const TASK_STATUSES: TaskStatus[] = [
+  "todo",
+  "in_progress",
+  "review",
+  "done",
+];
 export const TASK_PRIORITIES: TaskPriority[] = [
   "low",
   "medium",
@@ -71,6 +76,7 @@ export interface StatusCounts {
   total: number;
   todo: number;
   in_progress: number;
+  review: number;
   done: number;
 }
 

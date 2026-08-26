@@ -34,7 +34,7 @@ import type { Task } from "@/lib/types";
 const schema = z.object({
   title: z.string().trim().min(1, "Title is required").max(200, "Title is too long"),
   description: z.string().trim().max(4000, "Description is too long").optional(),
-  status: z.enum(["todo", "in_progress", "done"]),
+  status: z.enum(["todo", "in_progress", "review", "done"]),
   priority: z.enum(["low", "medium", "high", "urgent"]),
   due_date: z.string().optional(),
 });

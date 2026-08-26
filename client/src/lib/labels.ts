@@ -4,6 +4,7 @@ import type { TaskPriority, TaskStatus } from "./types";
 export const STATUS_LABELS: Record<TaskStatus, string> = {
   todo: "To Do",
   in_progress: "In Progress",
+  review: "Review",
   done: "Done",
 };
 
@@ -14,6 +15,7 @@ export const STATUS_LABELS: Record<TaskStatus, string> = {
 export const STATUS_COLORS: Record<TaskStatus, string> = {
   todo: "hsl(var(--status-todo))",
   in_progress: "hsl(var(--status-progress))",
+  review: "hsl(var(--status-review))",
   done: "hsl(var(--status-done))",
 };
 
