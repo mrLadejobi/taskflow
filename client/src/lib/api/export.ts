@@ -8,6 +8,26 @@ export async function exportTasksJson(projectId: number): Promise<unknown[]> {
   return data;
 }
 
+export async function downloadTasksJson(
+  projectId: number,
+  projectName: string,
+): Promise<void> {
+  const data = await exportTasksJson(projectId);
+  const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
+    JSON.stringify(data, null, 2),
+  )}`;
+  const link = document.createElement("a");
+  link.href = jsonString;
+  link.setAttribute(
+    "download",
+    `${projectName.toLowerCase().replace(/\s+/g, "_")}_backup.json`,
+  );
+  document.body.appendChild(link);
+  link.click();
+  link.parentNode?.removeChild(link);
+}
+
+
 export async function exportTasksCsv(
   projectId: number,
   projectName: string,
