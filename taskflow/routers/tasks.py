@@ -11,6 +11,7 @@ from taskflow.dependencies import (
     CurrentUser,
     DbSession,
     PaginationParams,
+    get_project_accessible_or_404,
     get_project_owned_or_404,
 )
 from taskflow.models.project import Project
@@ -134,7 +135,7 @@ def list_tasks(
     sort: str | None = Query(default=None, description=_SORT_DESCRIPTION),
 ) -> Page[TaskRead]:
     """List tasks in a project with filtering, sorting, and pagination."""
-    get_project_owned_or_404(db, project_id, owner)
+    get_project_accessible_or_404(db, project_id, owner)
     base = select(Task).where(Task.project_id == project_id)
     if assignee_id is not None:
         base = base.where(Task.assignee_id == assignee_id)
@@ -159,7 +160,7 @@ def list_my_tasks(
 @router.post("/projects/{project_id}/tasks", response_model=TaskRead, status_code=201)
 def create_task(project_id: int, payload: TaskCreate, owner: CurrentUser, db: DbSession) -> Task:
     """Create a new task in the given project."""
-    project = get_project_owned_or_404(db, project_id, owner)
+    project = get_project_accessible_or_404(db, project_id, owner)
     assignee_id = payload.assignee_id or owner.id
     task = Task(
         **payload.model_dump(exclude={"assignee_id"}),

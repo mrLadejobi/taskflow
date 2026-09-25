@@ -76,6 +76,73 @@ def get_project_owned_or_404(db: DbSession, project_id: int, owner: User):
     return project
 
 
+def get_project_accessible_or_404(db: DbSession, project_id: int, user: User):
+    """Fetch a project if the user is the owner or an active member."""
+    from taskflow.models.member import ProjectMember
+    from taskflow.models.project import Project
+
+    project = db.get(Project, project_id)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if project.owner_id == user.id:
+        return project
+
+    membership = (
+        db.query(ProjectMember)
+        .filter(
+            ProjectMember.project_id == project_id,
+            ProjectMember.user_id == user.id,
+        )
+        .first()
+    )
+    if membership is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    return project
+
+
+def get_project_admin_or_404(db: DbSession, project_id: int, user: User):
+    """Fetch a project ensuring the user is owner or an admin member."""
+    from taskflow.models.member import ProjectMember, ProjectRole
+    from taskflow.models.project import Project
+
+    project = db.get(Project, project_id)
+    if project is None:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if project.owner_id == user.id:
+        return project
+
+    membership = (
+        db.query(ProjectMember)
+        .filter(
+            ProjectMember.project_id == project_id,
+            ProjectMember.user_id == user.id,
+            ProjectMember.role == ProjectRole.ADMIN,
+        )
+        .first()
+    )
+    if membership is None:
+        raise HTTPException(
+            status_code=403, detail="Admin permissions required for this project"
+        )
+
+    return project
+
+
+def get_task_accessible_or_404(db: DbSession, task_id: int, user: User):
+    """Fetch a task if the user has access to its parent project."""
+    from taskflow.models.task import Task
+
+    task = db.get(Task, task_id)
+    if task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    get_project_accessible_or_404(db, task.project_id, user)
+    return task
+
+
 @dataclass
 class Pagination:
     """Resolved pagination window for a list endpoint."""

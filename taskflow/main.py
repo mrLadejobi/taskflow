@@ -13,7 +13,20 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from taskflow.config import settings
 from taskflow.database import init_db
-from taskflow.routers import auth, dashboard, projects, tags, tasks, users
+from taskflow.routers import (
+    activity,
+    auth,
+    comments,
+    dashboard,
+    export,
+    members,
+    notifications,
+    projects,
+    subtasks,
+    tags,
+    tasks,
+    users,
+)
 
 logger = logging.getLogger("taskflow")
 
@@ -89,6 +102,12 @@ def create_app() -> FastAPI:
     app.include_router(tasks.router, prefix=prefix)
     app.include_router(tags.router, prefix=prefix)
     app.include_router(dashboard.router, prefix=prefix)
+    app.include_router(comments.router, prefix=prefix)
+    app.include_router(subtasks.router, prefix=prefix)
+    app.include_router(activity.router, prefix=prefix)
+    app.include_router(members.router, prefix=prefix)
+    app.include_router(notifications.router, prefix=prefix)
+    app.include_router(export.router, prefix=prefix)
 
     @app.get("/health", tags=["meta"])
     def health() -> dict[str, str]:
