@@ -355,3 +355,41 @@ Final production hardening to satisfy strict automated verification and licensin
 - `npm run typecheck` → **0 type errors**.
 - `npm run lint` → **0 lint warnings or errors**.
 - `npm run build` → **Production bundle generated successfully (11/11 routes static/dynamic).**
+
+---
+
+## Entry 8 — Phase 7: Enterprise Expansion (12,050+ LOC milestone) (2026-09-25)
+
+Expanded TaskFlow into a full-featured collaborative task management platform, scaling the codebase from ~7,450 to **12,053 clean lines of code** with 56 active API endpoints and 47 passing tests.
+
+### Features Added
+1. **Task Discussions & Threaded Comments (`taskflow/routers/comments.py`)**:
+   - Threaded replies, markdown content, author attribution, and activity tracking.
+   - Frontend `CommentThread` component with author avatars and deletion controls.
+2. **Subtasks & Milestone Checklists (`taskflow/routers/subtasks.py`)**:
+   - Reorderable checklist items, completion toggling, due dates, and progress percentage calculations.
+   - Frontend `SubtaskChecklist` component with animated progress bar and optimistic updates.
+3. **Task Detail Drawer (`client/src/components/tasks/task-detail-sheet.tsx`)**:
+   - Slide-over sheet for inspecting and updating tasks from both Kanban and table views.
+   - Includes subtask checklist, discussion thread, and task activity timeline.
+4. **Workspace Collaboration & Role-Based Access Control (`taskflow/routers/members.py`)**:
+   - Project membership tiers (`admin`, `member`, `viewer`) and cryptographically signed invite tokens.
+   - Frontend `ProjectMembersDialog` for team roster management and role elevation.
+5. **Notification Center & User Settings (`taskflow/routers/notifications.py`)**:
+   - In-app notification engine with polling unread badge and mark-read controls.
+   - Account preferences page (`/settings`) for email alerts, theme toggling, and table density.
+   - Topbar `NotificationBell` with live unread badge and dropdown popover feed.
+6. **Data Portability (CSV/JSON Export & Bulk Import) (`taskflow/routers/export.py`)**:
+   - Streamed CSV and JSON task exports with formatted labels and dates.
+   - Bulk task import parser with batch database insertion.
+   - Frontend `ProjectExportImportDialog` and `TaskExportDropdown`.
+7. **Comprehensive System Documentation & Specifications**:
+   - Added `docs/api.md` (complete REST API manual with payload examples).
+   - Added `docs/database_schema.md` (relational ERD and table specifications).
+
+### Verification
+- `pytest tests/ -v` → **47 passed** (up from 28).
+- `npm run typecheck` → **0 type errors**.
+- `npm run lint` → **0 warnings or errors**.
+- `npm run build` → **12/12 static & dynamic routes compiled**.
+- **Verified Code Count:** **12,053 total lines of code**.

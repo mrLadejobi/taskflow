@@ -109,6 +109,8 @@ A GitHub Actions workflow (`.github/workflows/ci.yml`) runs on push and pull req
 
 ## Documentation
 
+- [REST API Reference](file:///c:/Users/oluwa/taskflow/docs/api.md) — Complete endpoint specifications, query parameters, and payload schemas.
+- [Database Schema & ERD](file:///c:/Users/oluwa/taskflow/docs/database_schema.md) — Relational schema, indexes, constraints, and cascade delete rules.
 - [Architecture & Design Spec](file:///c:/Users/oluwa/taskflow/docs/architecture.md) — Domain modeling, data isolation, and system flow.
 - [Operational Runbook](file:///c:/Users/oluwa/taskflow/docs/runbook.md) — Deployment, health monitoring, and troubleshooting.
 - [Contributing Guidelines](file:///c:/Users/oluwa/taskflow/CONTRIBUTING.md) — Code style, testing standards, and git guidelines.
@@ -121,16 +123,17 @@ taskflow/
   main.py          # app factory, middleware, router mounting
   config.py        # settings
   database.py      # engine, session, Base, init_db
-  dependencies.py  # auth, db session, pagination deps
+  dependencies.py  # auth, db session, RBAC, pagination deps
   security.py      # password hashing + JWT
-  queries.py       # shared query helpers (sorting)
-  models/          # SQLAlchemy models (user, project, task, tag)
-  schemas/         # Pydantic schemas
-  routers/         # auth, users, projects, tasks, tags, dashboard
-client/            # Next.js 14 frontend application
-docs/              # Architecture and runbook documentation
-tests/             # pytest suite (28 unit and integration tests)
+  activity.py      # audit trail logging service
+  models/          # SQLAlchemy models (user, project, task, tag, comments, subtasks, members, notifications)
+  schemas/         # Pydantic v2 schemas
+  routers/         # auth, users, projects, tasks, tags, dashboard, comments, subtasks, activity, members, notifications, export
+client/            # Next.js 14 frontend application (Kanban, tables, settings, detail sheets)
+docs/              # Architecture, API reference, ERD, and runbook documentation
+tests/             # pytest suite (47 unit and integration tests)
 .github/           # GitHub Actions CI workflow
 WORKLOG.md         # chronological development log
 ```
+
 
