@@ -1,23 +1,45 @@
+"use client";
+
 import { CheckCircle2, CircleDot, MessageSquare, Tag, User } from "lucide-react";
 import type { ActivityLog } from "@/lib/types";
 import { formatRelative } from "@/lib/format";
+import { useTaskActivity } from "@/lib/hooks/use-activity";
 
 interface TaskActivityTimelineProps {
-  logs: ActivityLog[];
+  taskId?: number;
+  logs?: ActivityLog[];
   className?: string;
 }
 
-export function TaskActivityTimeline({ logs, className }: TaskActivityTimelineProps) {
+export function TaskActivityTimeline({
+  taskId,
+  logs: initialLogs,
+  className,
+}: TaskActivityTimelineProps) {
+  const { data: fetchedLogs, isLoading } = useTaskActivity(
+    initialLogs ? null : taskId ?? null,
+  );
+
+  const logs = initialLogs ?? fetchedLogs ?? [];
+
+  if (isLoading) {
+    return (
+      <div className="py-6 text-center text-xs text-muted-foreground animate-pulse">
+        Loading activity history...
+      </div>
+    );
+  }
+
   if (logs.length === 0) {
     return (
-      <p className="text-xs text-muted-foreground py-4 text-center">
+      <p className="text-xs text-muted-foreground py-6 text-center">
         No recent activity recorded for this item.
       </p>
     );
   }
 
   const getActionIcon = (action: string) => {
-    switch (action) {
+    switch (action.toLowerCase()) {
       case "completed":
         return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />;
       case "commented":
@@ -41,16 +63,19 @@ export function TaskActivityTimeline({ logs, className }: TaskActivityTimelinePr
             </span>
             <div className="flex items-baseline justify-between gap-2">
               <p className="text-xs font-medium text-foreground">
-                {log.description || `${log.action} task`}
+                <span className="font-semibold text-primary">
+                  {log.user?.full_name || log.user?.email || "User"}
+                </span>{" "}
+                {log.action}
               </p>
               <time className="text-[10px] text-muted-foreground shrink-0">
                 {formatRelative(log.created_at)}
               </time>
             </div>
-            {log.details && Object.keys(log.details).length > 0 && (
-              <pre className="mt-1 text-[11px] text-muted-foreground bg-muted/40 p-1.5 rounded font-mono overflow-x-auto">
-                {JSON.stringify(log.details, null, 2)}
-              </pre>
+            {log.details && (
+              <p className="mt-0.5 text-[11px] text-muted-foreground">
+                {log.details}
+              </p>
             )}
           </li>
         ))}
