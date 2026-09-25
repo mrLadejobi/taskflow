@@ -393,3 +393,32 @@ Expanded TaskFlow into a full-featured collaborative task management platform, s
 - `npm run lint` → **0 warnings or errors**.
 - `npm run build` → **12/12 static & dynamic routes compiled**.
 - **Verified Code Count:** **12,053 total lines of code**.
+
+---
+
+## Entry 9 — Phase 8: Operational Hardening & Developer Experience (2026-09-25)
+
+Completed production readiness hardening across backend infrastructure, developer tooling, and client UX components, bringing the repository past the **100+ git commit milestone** (101 total commits) with 53 passing automated unit and integration tests.
+
+### Enhancements Completed
+1. **Operational Probes & Observability (`taskflow/routers/health.py`, `taskflow/middleware.py`)**:
+   - Implemented `/healthz` (liveness) and `/readyz` (readiness with live database connectivity and latency reporting).
+   - Installed `RequestCorrelationMiddleware` attaching standard `X-Request-ID` headers to all request/response cycles.
+2. **Query Building & Task Reminder Helpers (`taskflow/queries.py`, `taskflow/reminders.py`)**:
+   - Added `apply_pagination` helper and date-range reminder query builders for overdue and upcoming task lists.
+   - Added automated unit test suites in `tests/test_health.py`, `tests/test_middleware.py`, `tests/test_queries.py`, and `tests/test_reminders.py`.
+3. **Frontend DX & Keyboard Navigation (`client/src/`)**:
+   - Added `useKeyboardShortcut` hook and interactive `ShortcutsModal` (`?` hotkey).
+   - Created reusable UI elements: `CopyButton`, `EmptyState`, `ProjectProgressBar`, `TaskFilterBar`, `OverdueBadge`, and `Breadcrumbs`.
+   - Added custom Next.js App Router error handling: `not-found.tsx` (404) and `error.tsx` (Global Error Boundary).
+4. **DevOps & Production Documentation**:
+   - Created `docker-compose.yml` for containerized multi-tier orchestration.
+   - Added `docs/deployment.md` with complete Nginx reverse proxy, HTTPS/SSL, and systemd service templates.
+   - Added repository governance files: `SECURITY.md`, `.github/ISSUE_TEMPLATE/`, and `.github/PULL_REQUEST_TEMPLATE.md`.
+
+### Verification
+- `pytest tests/ -v` → **53 passed** (100% pass rate).
+- `npm run check` (`tsc --noEmit && next lint`) → **0 errors, 0 warnings**.
+- `npm run build` → **All Next.js routes built cleanly**.
+- **Total Git Commits:** **101 discrete commits**.
+
