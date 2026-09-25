@@ -39,3 +39,18 @@ def apply_sort(
             ),
         )
     return stmt.order_by(column.desc() if descending else column.asc())
+
+
+def apply_pagination(stmt: Select, limit: int, offset: int) -> Select:
+    """Apply limit and offset pagination to a Select statement.
+
+    Args:
+        stmt: The select statement to paginate.
+        limit: Maximum number of rows to return.
+        offset: Number of initial rows to skip.
+
+    Returns:
+        The statement with LIMIT and OFFSET applied.
+    """
+    return stmt.limit(limit).offset(offset)
+
