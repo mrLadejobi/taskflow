@@ -19,6 +19,7 @@ from taskflow.routers import (
     comments,
     dashboard,
     export,
+    health,
     members,
     notifications,
     projects,
@@ -108,6 +109,7 @@ def create_app() -> FastAPI:
     app.include_router(members.router, prefix=prefix)
     app.include_router(notifications.router, prefix=prefix)
     app.include_router(export.router, prefix=prefix)
+    app.include_router(health.router)
 
     @app.get("/health", tags=["meta"])
     def health() -> dict[str, str]:
