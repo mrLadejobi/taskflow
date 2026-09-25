@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { HelpCircle, Menu } from "lucide-react";
 
 import { Brand } from "@/components/brand";
