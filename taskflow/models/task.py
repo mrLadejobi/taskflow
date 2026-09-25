@@ -77,6 +77,15 @@ class Task(Base):
     tags: Mapped[list["Tag"]] = relationship(  # noqa: F821
         secondary="task_tags", back_populates="tasks"
     )
+    comments: Mapped[list["Comment"]] = relationship(  # noqa: F821
+        back_populates="task", cascade="all, delete-orphan", order_by="Comment.created_at"
+    )
+    subtasks: Mapped[list["Subtask"]] = relationship(  # noqa: F821
+        back_populates="task", cascade="all, delete-orphan"
+    )
+    activities: Mapped[list["ActivityLog"]] = relationship(  # noqa: F821
+        back_populates="task", cascade="all, delete-orphan"
+    )
 
     def mark_done(self) -> None:
         """Transition the task to DONE and stamp completion time."""

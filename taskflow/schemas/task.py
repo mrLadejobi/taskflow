@@ -46,6 +46,9 @@ class TaskRead(TaskBase):
     created_at: datetime
     updated_at: datetime
     tags: list[TagOut] = []
+    subtask_count: int = 0
+    completed_subtask_count: int = 0
+    comment_count: int = 0
 
 
 class BulkStatusUpdate(BaseModel):

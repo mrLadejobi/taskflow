@@ -41,6 +41,15 @@ class User(Base):
     projects: Mapped[list["Project"]] = relationship(  # noqa: F821
         back_populates="owner", cascade="all, delete-orphan"
     )
+    project_memberships: Mapped[list["ProjectMember"]] = relationship(  # noqa: F821
+        back_populates="user", cascade="all, delete-orphan"
+    )
+    notifications: Mapped[list["Notification"]] = relationship(  # noqa: F821
+        back_populates="user", cascade="all, delete-orphan"
+    )
+    settings: Mapped["UserSettings | None"] = relationship(  # noqa: F821
+        back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<User id={self.id} email={self.email!r}>"

@@ -40,6 +40,15 @@ class Project(Base):
     tasks: Mapped[list["Task"]] = relationship(  # noqa: F821
         back_populates="project", cascade="all, delete-orphan"
     )
+    members: Mapped[list["ProjectMember"]] = relationship(  # noqa: F821
+        back_populates="project", cascade="all, delete-orphan"
+    )
+    invitations: Mapped[list["ProjectInvitation"]] = relationship(  # noqa: F821
+        back_populates="project", cascade="all, delete-orphan"
+    )
+    activities: Mapped[list["ActivityLog"]] = relationship(  # noqa: F821
+        back_populates="project", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<Project id={self.id} name={self.name!r}>"
