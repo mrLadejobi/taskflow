@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from taskflow.config import settings
 from taskflow.database import init_db
+from taskflow.middleware import RequestCorrelationMiddleware
 from taskflow.routers import (
     activity,
     auth,
@@ -72,6 +73,8 @@ def create_app() -> FastAPI:
         version="0.1.0",
         lifespan=lifespan,
     )
+
+    app.add_middleware(RequestCorrelationMiddleware)
 
     app.add_middleware(
         CORSMiddleware,
