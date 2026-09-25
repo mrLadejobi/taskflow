@@ -21,6 +21,16 @@ export const queryKeys = {
   tags: (params: ListParams = {}) => ["tags", params] as const,
   users: ["users"] as const,
   user: (id: number) => ["user", id] as const,
+
+  comments: (taskId: number) => ["task", taskId, "comments"] as const,
+  subtasks: (taskId: number) => ["task", taskId, "subtasks"] as const,
+  taskActivity: (taskId: number) => ["task", taskId, "activity"] as const,
+  projectActivity: (projectId: number, params: ListParams = {}) =>
+    ["project", projectId, "activity", params] as const,
+  projectMembers: (projectId: number) => ["project", projectId, "members"] as const,
+  notifications: (params: ListParams = {}) => ["notifications", params] as const,
+  unreadNotificationCount: ["notifications", "unread-count"] as const,
+  userSettings: ["user-settings"] as const,
 };
 
 /** Query-key prefixes touched by any task mutation. */

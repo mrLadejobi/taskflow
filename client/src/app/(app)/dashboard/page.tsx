@@ -11,6 +11,7 @@ import {
 import { PageHeader } from "@/components/app/page-header";
 import { PriorityBar } from "@/components/dashboard/priority-bar";
 import { ProgressOverview } from "@/components/dashboard/progress-overview";
+import { RecentActivityCard } from "@/components/dashboard/recent-activity-card";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { StatusDonut } from "@/components/dashboard/status-donut";
 import { Button } from "@/components/ui/button";
@@ -84,6 +85,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <StatusDonut tasks={data.tasks} />
             <PriorityBar byPriority={data.by_priority} />
+            <RecentActivityCard />
           </div>
         </>
       )}

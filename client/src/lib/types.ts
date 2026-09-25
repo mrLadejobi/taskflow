@@ -150,3 +150,162 @@ export interface ListParams {
   offset?: number;
   sort?: string;
 }
+
+/* ---------- enterprise module types ---------- */
+
+export interface CommentAuthor {
+  id: number;
+  email: string;
+  full_name: string | null;
+}
+
+export interface Comment {
+  id: number;
+  task_id: number;
+  author_id: number;
+  content: string;
+  parent_id: number | null;
+  created_at: string;
+  updated_at: string;
+  author?: CommentAuthor;
+}
+
+export interface CommentCreateInput {
+  content: string;
+  parent_id?: number | null;
+}
+
+export interface CommentUpdateInput {
+  content: string;
+}
+
+export interface Subtask {
+  id: number;
+  task_id: number;
+  title: string;
+  is_completed: boolean;
+  position: number;
+  due_date: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SubtaskCreateInput {
+  title: string;
+  position?: number;
+  due_date?: string | null;
+}
+
+export interface SubtaskUpdateInput {
+  title?: string;
+  is_completed?: boolean;
+  position?: number;
+  due_date?: string | null;
+}
+
+export interface ActivityUser {
+  id: number;
+  email: string;
+  full_name: string | null;
+}
+
+export interface ActivityLog {
+  id: number;
+  project_id: number;
+  task_id: number | null;
+  user_id: number;
+  action: string;
+  details: string | null;
+  created_at: string;
+  user?: ActivityUser;
+}
+
+export type ProjectRole = "admin" | "member" | "viewer";
+export type InvitationStatus = "pending" | "accepted" | "revoked";
+
+export interface ProjectMember {
+  id: number;
+  project_id: number;
+  user_id: number;
+  role: ProjectRole;
+  joined_at: string;
+  user?: User;
+}
+
+export interface ProjectMemberInviteInput {
+  email: string;
+  role?: ProjectRole;
+}
+
+export interface ProjectMemberUpdateInput {
+  role: ProjectRole;
+}
+
+export interface ProjectInvitation {
+  id: number;
+  project_id: number;
+  inviter_id: number;
+  email: string;
+  role: ProjectRole;
+  status: InvitationStatus;
+  token: string;
+  created_at: string;
+  expires_at: string;
+}
+
+export type NotificationType =
+  | "task_assigned"
+  | "task_status"
+  | "comment_added"
+  | "project_invite"
+  | "system";
+
+export interface Notification {
+  id: number;
+  user_id: number;
+  title: string;
+  message: string;
+  type: NotificationType;
+  link: string | null;
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface NotificationCount {
+  unread_count: number;
+}
+
+export interface UserSettings {
+  id: number;
+  user_id: number;
+  email_notifications: boolean;
+  task_assigned_alerts: boolean;
+  status_change_alerts: boolean;
+  theme: "system" | "light" | "dark";
+  compact_view: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserSettingsUpdateInput {
+  email_notifications?: boolean;
+  task_assigned_alerts?: boolean;
+  status_change_alerts?: boolean;
+  theme?: "system" | "light" | "dark";
+  compact_view?: boolean;
+}
+
+export interface TaskImportItem {
+  title: string;
+  description?: string;
+  status?: string;
+  priority?: string;
+  due_date?: string | null;
+  tags?: string[];
+}
+
+export interface ImportSummary {
+  imported: number;
+  skipped: number;
+  errors: string[];
+}

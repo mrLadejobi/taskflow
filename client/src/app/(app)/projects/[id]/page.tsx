@@ -6,14 +6,18 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   ArrowLeft,
+  FileSpreadsheet,
   MoreVertical,
   Pencil,
   Plus,
   Trash2,
+  Users,
 } from "lucide-react";
 
 import { ConfirmDialog } from "@/components/confirm-dialog";
+import { ProjectExportImportDialog } from "@/components/projects/project-export-import-dialog";
 import { ProjectFormDialog } from "@/components/projects/project-form-dialog";
+import { ProjectMembersDialog } from "@/components/projects/project-members-dialog";
 import { KanbanBoard } from "@/components/tasks/kanban-board";
 import { TaskFormDialog } from "@/components/tasks/task-form-dialog";
 import { TaskTableView } from "@/components/tasks/task-table-view";
@@ -46,6 +50,8 @@ export default function ProjectDetailPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [membersOpen, setMembersOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
 
   async function handleDelete() {
     try {
@@ -117,8 +123,16 @@ export default function ProjectDetailPage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button onClick={() => setCreateOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
+            <Button variant="outline" size="sm" onClick={() => setMembersOpen(true)}>
+              <Users className="mr-1.5 h-3.5 w-3.5" />
+              Team
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setExportOpen(true)}>
+              <FileSpreadsheet className="mr-1.5 h-3.5 w-3.5" />
+              Data
+            </Button>
+            <Button size="sm" onClick={() => setCreateOpen(true)}>
+              <Plus className="mr-1.5 h-3.5 w-3.5" />
               New task
             </Button>
             <DropdownMenu>
@@ -170,6 +184,17 @@ export default function ProjectDetailPage() {
         open={editOpen}
         onOpenChange={setEditOpen}
         project={project}
+      />
+      <ProjectMembersDialog
+        projectId={projectId}
+        open={membersOpen}
+        onOpenChange={setMembersOpen}
+      />
+      <ProjectExportImportDialog
+        projectId={projectId}
+        projectName={project.name}
+        open={exportOpen}
+        onOpenChange={setExportOpen}
       />
       <ConfirmDialog
         open={deleteOpen}

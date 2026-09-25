@@ -12,6 +12,7 @@ import { useProjectTasks, useUpdateTask } from "@/lib/hooks/use-tasks";
 import { TASK_STATUSES } from "@/lib/types";
 import type { Task, TaskStatus } from "@/lib/types";
 import { KanbanColumn } from "./kanban-column";
+import { TaskDetailSheet } from "./task-detail-sheet";
 
 interface KanbanBoardProps {
   projectId: number;
@@ -46,6 +47,7 @@ export function KanbanBoard({ projectId }: KanbanBoardProps) {
 
   const [board, setBoard] = useState<Board>(emptyBoard);
   const [mounted, setMounted] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -123,10 +125,20 @@ export function KanbanBoard({ projectId }: KanbanBoardProps) {
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {TASK_STATUSES.map((status) => (
-            <KanbanColumn key={status} status={status} tasks={board[status]} />
+            <KanbanColumn
+              key={status}
+              status={status}
+              tasks={board[status]}
+              onTaskClick={(t) => setSelectedTask(t)}
+            />
           ))}
         </div>
       </DragDropContext>
+      <TaskDetailSheet
+        task={selectedTask}
+        open={Boolean(selectedTask)}
+        onOpenChange={(open) => !open && setSelectedTask(null)}
+      />
     </div>
   );
 }

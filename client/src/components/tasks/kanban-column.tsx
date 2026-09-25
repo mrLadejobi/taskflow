@@ -10,10 +10,11 @@ import { KanbanCard } from "./kanban-card";
 interface KanbanColumnProps {
   status: TaskStatus;
   tasks: Task[];
+  onTaskClick?: (task: Task) => void;
 }
 
 /** A single status column: a droppable list of draggable task cards. */
-export function KanbanColumn({ status, tasks }: KanbanColumnProps) {
+export function KanbanColumn({ status, tasks, onTaskClick }: KanbanColumnProps) {
   return (
     <div className="flex min-w-0 flex-col rounded-xl border bg-muted/30">
       <div className="flex items-center gap-2 px-3 py-2.5">
@@ -49,7 +50,11 @@ export function KanbanColumn({ status, tasks }: KanbanColumnProps) {
                     {...dragProvided.draggableProps}
                     {...dragProvided.dragHandleProps}
                   >
-                    <KanbanCard task={task} isDragging={dragSnapshot.isDragging} />
+                    <KanbanCard
+                      task={task}
+                      isDragging={dragSnapshot.isDragging}
+                      onClick={() => onTaskClick?.(task)}
+                    />
                   </div>
                 )}
               </Draggable>

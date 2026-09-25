@@ -11,13 +11,14 @@ import { PriorityBadge } from "./task-badges";
 interface KanbanCardProps {
   task: Task;
   isDragging?: boolean;
+  onClick?: () => void;
 }
 
 /**
  * A single task rendered as a board card. Purely presentational — the column
  * wraps it in a Draggable and owns the drag wiring.
  */
-export function KanbanCard({ task, isDragging }: KanbanCardProps) {
+export function KanbanCard({ task, isDragging, onClick }: KanbanCardProps) {
   const done = task.status === "done";
   const overdue = !done && isPastDue(task.due_date);
   const shown = task.tags.slice(0, 2);
@@ -25,9 +26,10 @@ export function KanbanCard({ task, isDragging }: KanbanCardProps) {
 
   return (
     <div
+      onClick={onClick}
       className={cn(
-        "rounded-lg border bg-card p-3 shadow-sm transition-shadow",
-        "hover:border-foreground/20 hover:shadow-md",
+        "cursor-pointer rounded-lg border bg-card p-3 shadow-sm transition-all",
+        "hover:border-primary/40 hover:shadow-md",
         isDragging && "border-primary/40 shadow-lg ring-1 ring-primary/30",
       )}
     >

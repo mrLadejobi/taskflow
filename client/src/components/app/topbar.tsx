@@ -13,10 +13,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 import { SidebarNav } from "./sidebar-nav";
 import { UserMenu } from "./user-menu";
 
-/** Sticky top bar: mobile nav trigger, theme toggle, and account menu. */
+/** Sticky top bar: mobile nav trigger, notifications, theme toggle, and account menu. */
 export function Topbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -51,7 +52,8 @@ export function Topbar() {
         <Brand href="/dashboard" iconOnly />
       </div>
 
-      <div className="ml-auto flex items-center gap-1">
+      <div className="ml-auto flex items-center gap-2">
+        <NotificationBell />
         <ThemeToggle />
         <UserMenu />
       </div>

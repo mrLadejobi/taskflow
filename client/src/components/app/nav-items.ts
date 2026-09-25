@@ -1,4 +1,4 @@
-import { LayoutDashboard, FolderKanban, ListTodo } from "lucide-react";
+import { FolderKanban, LayoutDashboard, ListTodo, Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export interface NavItem {
@@ -12,4 +12,5 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Projects", href: "/projects", icon: FolderKanban },
   { title: "My Tasks", href: "/tasks", icon: ListTodo },
+  { title: "Settings", href: "/settings", icon: Settings },
 ];
