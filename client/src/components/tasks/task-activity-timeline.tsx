@@ -1,65 +1,60 @@
-"use client";
-
-import { Clock, History } from "lucide-react";
-import { useTaskActivity } from "@/lib/hooks/use-activity";
-import { formatDate } from "@/lib/format";
+import { CheckCircle2, CircleDot, MessageSquare, Tag, User } from "lucide-react";
+import type { ActivityLog } from "@/lib/types";
+import { formatRelative } from "@/lib/format";
 
 interface TaskActivityTimelineProps {
-  taskId: number;
+  logs: ActivityLog[];
+  className?: string;
 }
 
-export function TaskActivityTimeline({ taskId }: TaskActivityTimelineProps) {
-  const { data: activities = [], isLoading } = useTaskActivity(taskId);
-
-  if (isLoading) {
-    return <div className="py-4 text-xs text-muted-foreground">Loading activity history...</div>;
+export function TaskActivityTimeline({ logs, className }: TaskActivityTimelineProps) {
+  if (logs.length === 0) {
+    return (
+      <p className="text-xs text-muted-foreground py-4 text-center">
+        No recent activity recorded for this item.
+      </p>
+    );
   }
 
-  const formatAction = (action: string) => {
+  const getActionIcon = (action: string) => {
     switch (action) {
-      case "comment_added":
-        return "added a comment";
-      case "subtask_created":
-        return "created a subtask";
-      case "subtask_toggled":
-        return "updated a subtask";
-      case "status_changed":
-        return "updated task status";
+      case "completed":
+        return <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />;
+      case "commented":
+        return <MessageSquare className="h-3.5 w-3.5 text-blue-500" />;
+      case "tagged":
+        return <Tag className="h-3.5 w-3.5 text-purple-500" />;
+      case "assigned":
+        return <User className="h-3.5 w-3.5 text-amber-500" />;
       default:
-        return action.replace(/_/g, " ");
+        return <CircleDot className="h-3.5 w-3.5 text-muted-foreground" />;
     }
   };
 
   return (
-    <div className="space-y-4">
-      <div className="relative space-y-4 before:absolute before:bottom-0 before:left-3 before:top-2 before:w-[1px] before:bg-border/60">
-        {activities.map((item) => (
-          <div key={item.id} className="relative flex items-start gap-3 pl-1">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-border bg-background">
-              <Clock className="h-2.5 w-2.5 text-muted-foreground" />
-            </div>
-
-            <div className="flex-1 space-y-0.5 text-xs">
-              <p className="text-foreground">
-                <span className="font-semibold">
-                  {item.user?.full_name || item.user?.email || "User"}
-                </span>{" "}
-                <span className="text-muted-foreground">{formatAction(item.action)}</span>
+    <div className={className}>
+      <ol className="relative border-l border-border/60 ml-2 space-y-4 py-2">
+        {logs.map((log) => (
+          <li key={log.id} className="ml-4">
+            <span className="absolute -left-2 flex h-4 w-4 items-center justify-center rounded-full bg-background ring-4 ring-background">
+              {getActionIcon(log.action)}
+            </span>
+            <div className="flex items-baseline justify-between gap-2">
+              <p className="text-xs font-medium text-foreground">
+                {log.description || `${log.action} task`}
               </p>
-              <p className="text-[11px] text-muted-foreground">
-                {formatDate(item.created_at)}
-              </p>
+              <time className="text-[10px] text-muted-foreground shrink-0">
+                {formatRelative(log.created_at)}
+              </time>
             </div>
-          </div>
+            {log.details && Object.keys(log.details).length > 0 && (
+              <pre className="mt-1 text-[11px] text-muted-foreground bg-muted/40 p-1.5 rounded font-mono overflow-x-auto">
+                {JSON.stringify(log.details, null, 2)}
+              </pre>
+            )}
+          </li>
         ))}
-
-        {activities.length === 0 && (
-          <div className="py-6 text-center text-xs text-muted-foreground">
-            <History className="mx-auto mb-2 h-6 w-6 opacity-30" />
-            No activity logged yet.
-          </div>
-        )}
-      </div>
+      </ol>
     </div>
   );
 }
