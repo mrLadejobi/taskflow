@@ -33,3 +33,27 @@ export function isPastDue(iso?: string | null): boolean {
   today.setHours(0, 0, 0, 0);
   return d < today;
 }
+
+/** True when a due date falls within the next N days (default 3 days). */
+export function isDueSoon(iso?: string | null, daysAhead = 3): boolean {
+  const d = parse(iso);
+  if (!d) return false;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const cutoff = new Date(today);
+  cutoff.setDate(cutoff.getDate() + daysAhead);
+  return d >= today && d <= cutoff;
+}
+
+/** Format large numbers compactly (e.g. 1.2k, 4.5M). */
+export function formatCompactNumber(num: number): string {
+  if (num < 1000) return num.toString();
+  return Intl.NumberFormat("en", { notation: "compact" }).format(num);
+}
+
+/** Truncate long strings with an ellipsis. */
+export function truncateText(text: string, maxLength = 50): string {
+  if (text.length <= maxLength) return text;
+  return text.slice(0, maxLength) + "…";
+}
+
