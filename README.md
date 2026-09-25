@@ -88,6 +88,32 @@ All routes are under `API_PREFIX` (default `/api/v1`). All except
 ### Meta
 - `GET /health` — liveness probe.
 
+## Frontend (Next.js Client)
+
+The `client/` directory contains an authenticated Next.js 14 web application:
+- **Interactive Kanban Board:** Drag-and-drop status workflows (`todo`, `in_progress`, `review`, `done`).
+- **Data Table:** Multi-column sorting, bulk status transitions, and bulk deletion.
+- **Metrics Dashboard:** Recharts charts showing task breakdowns and progress.
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+## Continuous Integration & Quality
+
+A GitHub Actions workflow (`.github/workflows/ci.yml`) runs on push and pull requests:
+- **Backend:** Python 3.12, dependency installation, pytest suite with coverage.
+- **Frontend:** Node 20, TypeScript compilation (`npm run typecheck`), ESLint (`npm run lint`), and Next.js production build (`npm run build`).
+
+## Documentation
+
+- [Architecture & Design Spec](file:///c:/Users/oluwa/taskflow/docs/architecture.md) — Domain modeling, data isolation, and system flow.
+- [Operational Runbook](file:///c:/Users/oluwa/taskflow/docs/runbook.md) — Deployment, health monitoring, and troubleshooting.
+- [Contributing Guidelines](file:///c:/Users/oluwa/taskflow/CONTRIBUTING.md) — Code style, testing standards, and git guidelines.
+- [Development Worklog](file:///c:/Users/oluwa/taskflow/WORKLOG.md) — Chronological engineering log and design decisions.
+
 ## Project layout
 
 ```
@@ -101,6 +127,10 @@ taskflow/
   models/          # SQLAlchemy models (user, project, task, tag)
   schemas/         # Pydantic schemas
   routers/         # auth, users, projects, tasks, tags, dashboard
-tests/             # pytest suite
+client/            # Next.js 14 frontend application
+docs/              # Architecture and runbook documentation
+tests/             # pytest suite (28 unit and integration tests)
+.github/           # GitHub Actions CI workflow
 WORKLOG.md         # chronological development log
 ```
+
