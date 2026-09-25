@@ -84,17 +84,27 @@ npm run build
 
 ## 4. Health Checks & Monitoring
 
-### 4.1 Liveness Probe
-- **Endpoint:** `GET /health`
+### 4.1 Liveness Probe (`/healthz`)
+- **Endpoint:** `GET /healthz`
 - **Expected Status:** `200 OK`
-- **Response Payload:** `{"status": "ok"}`
-- Use this probe for Kubernetes liveness/readiness probes or uptime monitors (e.g. BetterStack, Datadog, AWS Route 53).
+- **Response Payload:** `{"status": "pass", "service": "taskflow-api", "timestamp": "..."}`
+- Use this probe for Kubernetes liveness checks or container restart monitors.
 
-### 4.2 Application Logs
+### 4.2 Database Readiness Probe (`/readyz`)
+- **Endpoint:** `GET /readyz`
+- **Expected Status:** `200 OK` (or `503 Service Unavailable` if database is down)
+- **Response Payload:** `{"status": "pass", "service": "taskflow-api", "database": "connected", "db_latency_ms": 1.25, ...}`
+- Validates active database connectivity and records database ping latency.
+
+### 4.3 Distributed Tracing & Request Correlation
+- Every incoming HTTP request is assigned a unique `X-Request-ID` UUID (or inherits upstream `X-Request-ID` headers).
+- The correlation ID is reflected in the HTTP response headers and stored on `request.state.request_id` for end-to-end tracing.
+
+### 4.4 Application Logs
 - The backend features built-in structured request logging:
   `METHOD PATH -> STATUS (LATENCY ms)`
 - Example log output:
-  `INFO: taskflow.middleware: POST /api/v1/auth/login -> 200 (124.52ms)`
+  `INFO: taskflow: POST /api/v1/auth/login -> 200 (12.4ms)`
 
 ---
 
