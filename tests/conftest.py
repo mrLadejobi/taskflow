@@ -77,15 +77,15 @@ def user_factory(client):
     despite the shared, session-scoped test database.
     """
 
-    def make() -> dict[str, str]:
-        email = f"user{next(_email_seq)}@example.com"
+    def make(email: str | None = None) -> dict[str, str]:
+        user_email = email or f"user{next(_email_seq)}@example.com"
         client.post(
             "/api/v1/auth/register",
-            json={"email": email, "password": "password123", "full_name": "U"},
+            json={"email": user_email, "password": "password123", "full_name": "U"},
         )
         resp = client.post(
             "/api/v1/auth/login",
-            data={"username": email, "password": "password123"},
+            data={"username": user_email, "password": "password123"},
         )
         return {"Authorization": f"Bearer {resp.json()['access_token']}"}
 
